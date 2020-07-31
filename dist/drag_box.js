@@ -320,7 +320,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var DragBoxJs = exports.DragBoxJs = {
     drag: function drag(divId, imgList, x, y) {
-        initView(divId, 3, 7);
+        initView(divId, imgList, x, y);
     }
 };
 

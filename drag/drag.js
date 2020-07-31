@@ -1,6 +1,6 @@
 export const DragBoxJs = {
     drag: function (divId,imgList, x, y) {
-        initView(divId, 3, 7)
+        initView(divId, imgList,x, y)
     }
 };
 
