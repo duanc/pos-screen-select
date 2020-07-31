@@ -6,6 +6,17 @@ import img20102 from './theme/default/20102.png';
 import img20103 from './theme/default/20103.png';
 import img20104 from './theme/default/20104.png';
 import img20105 from './theme/default/20105.png';
+import img20106 from './theme/default/20106.png';
+import img20107 from './theme/default/20107.png';
+import img20108 from './theme/default/20108.png';
+import img20109 from './theme/default/20109.png';
+import img20110 from './theme/default/20110.png';
+import img20111 from './theme/default/20111.png';
+import img20112 from './theme/default/20112.png';
+import img20113 from './theme/default/20113.png';
+import img20114 from './theme/default/20114.png';
+import img20115 from './theme/default/20115.png';
+
 
 export default class DragBox extends Component {
 
@@ -32,40 +43,40 @@ export default class DragBox extends Component {
             src: img20103,
         }, {
             id: "20104",
-            src: "./theme/default/20104.png",
+            src: img20104,
         }, {
             id: "20105",
-            src: "./theme/default/20105.png",
+            src: img20105,
         }, {
             id: "20106",
-            src: "./theme/default/20106.png",
+            src: img20106,
         }, {
             id: "20107",
-            src: "./theme/default/20107.png",
+            src: img20107,
         }, {
             id: "20108",
-            src: "./theme/default/20108.png",
+            src: img20108,
         }, {
             id: "20109",
-            src: "./theme/default/20109.png",
+            src: img20109,
         }, {
             id: "20110",
-            src: "./theme/default/20110.png",
+            src: img20110,
         }, {
             id: "20111",
-            src: "./theme/default/20111.png",
+            src: img20111,
         }, {
             id: "20112",
-            src: "./theme/default/20112.png",
+            src: img20112,
         }, {
             id: "20113",
-            src: "./theme/default/20113.png",
+            src: img20113,
         }, {
             id: "20114",
-            src: "./theme/default/20114.png",
+            src: img20114,
         }, {
             id: "20115",
-            src: "./theme/default/20115.png",
+            src: img20115,
         }];
         DragBoxJs.drag(id,imageList,3,8);
     }

@@ -6,7 +6,7 @@ function getConfig(minified) {
         entry: './drag/DragBoxEle.jsx',
         output: {
             path: path.resolve('dist'),
-            library: 'drag',
+            library: 'DragBox',
             libraryTarget: 'umd',
             filename: 'drag_box.js',
         },

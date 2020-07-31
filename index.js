@@ -1,2 +1,2 @@
-import Layer from './dist/dragBox';
+import {DragBox} from './dist/drag_box';
 export default DragBox
