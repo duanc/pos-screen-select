@@ -25,13 +25,20 @@ export default class DragBox extends Component {
 
         this.state = {
             id: new Date().getTime(),
-            children: props.children,
         };
         this.rsNum = -1;
     }
 
     componentDidMount() {
+        console.log(this.props);
+        const {xSize, ySize, size, onChange} = this.props;
+        this.initView(size, xSize, ySize,onChange);
+    }
+
+
+    initView = (size, xSize, ySize,onChange) => {
         const {id} = this.state;
+
         const imageList = [{
             id: "20101",
             src: img20101,
@@ -78,17 +85,14 @@ export default class DragBox extends Component {
             id: "20115",
             src: img20115,
         }];
-        DragBoxJs.drag(id,imageList,3,8);
-    }
+
+        DragBoxJs.drag(id, imageList, size, xSize, ySize,onChange);
+    };
 
 
     componentWillReceiveProps(nextProps) {
-
-        this.setState({
-            children: nextProps.children,
-        }, () => {
-            this.changWindow(nextProps);
-        });
+        // const {xSize, ySize, size,onChange} = nextProps;
+        // this.initView(size, xSize, ySize,onChange);
     }
 
     // changWindow = (props) => {
@@ -135,7 +139,7 @@ export default class DragBox extends Component {
     render() {
         const {children, id} = this.state;
         return (
-            <div id={id} style={{'display': 'none'}}>
+            <div id={id} style={{overflow: "hidden", display: "flex", "justify-content": "center"}}>
                 {children}
             </div>
         );

@@ -1,19 +1,34 @@
 export const DragBoxJs = {
-    drag: function (divId,imgList, x, y) {
-        initView(divId, imgList,x, y)
+    drag: function (divId, imgList, size, x, y, onChange) {
+        initView(divId, imgList, size, x, y, onChange)
     }
 };
 
-var imgList = [];
 var resDivList = [];
 var sourceDivList = [];
 var resDataList = [];
 var endDocument;
 
-function initView(divId, imgList,x, y) {
-    this.imgList = imgList;
-    var size = 100;
+
+function getResDataList() {
+    return resDivList.filter((item) => {
+        return item.itemData;
+    }).map((item) => {
+        return {
+            id: item.itemData,
+            x:item.x,
+            y:item.y
+        }
+    })
+}
+
+function initView(divId, imgList, size, x, y,onChange) {
+    resDivList = [];
+    sourceDivList = [];
+    resDataList = [];
+
     var div = document.getElementById(divId);
+    div.innerHTML = "";
     resDivList = [];
     // div.style.width =  (size+2)*x*2+30 +"px";
     var leftDiv = document.createElement('div');
@@ -26,25 +41,28 @@ function initView(divId, imgList,x, y) {
         divBox.style.border = "1px solid #dfdfdf";
         divBox.style.float = "left";
         divBox.draggable = true;
+        divBox.y = Math.floor(i / x);
+        divBox.x = i - x * Math.floor(i / x);
         divBox.index = i;
         divBox.isRes = true;
         divBox.addEventListener("dragenter", function (event) {
             event.preventDefault();
             endDocument = event.target;
-            console.log(endDocument);
+            // console.log(endDocument);
         });
 
         divBox.addEventListener("dragend", function (event) {
             event.preventDefault();
-            console.log(event);
+            // console.log(event);
 
             if (endDocument.isRes && event.target.isRes) {
                 var tempBackground = endDocument.style.background;
-                var tempItemData = event.target.itemData;
+                var tempItemData = endDocument.itemData;
                 endDocument.style.background = event.target.style.background;
                 endDocument.itemData = event.target.itemData;
                 event.target.style.background = tempBackground;
                 event.target.itemData = tempItemData;
+                onChange(getResDataList());
             }
 
             if (!endDocument.isRes && event.target.isRes) {
@@ -55,6 +73,7 @@ function initView(divId, imgList,x, y) {
                 }
                 event.target.itemData = undefined;
                 event.target.style.background = "none";
+                onChange(getResDataList());
             }
         });
 
@@ -77,7 +96,7 @@ function initView(divId, imgList,x, y) {
         divBox.style.border = "1px solid #dfdfdf";
         divBox.style.float = "left";
         divBox.itemData = imgItem ? imgItem.id : undefined;
-        divBox.enable=true;
+        divBox.enable = true;
         divBox.isRes = false;
         if (imgItem != undefined) {
             divBox.style.background = "url(" + imgItem.src + ") no-repeat";
@@ -89,7 +108,7 @@ function initView(divId, imgList,x, y) {
         divBox.addEventListener("dragenter", function (event) {
             event.preventDefault();
             endDocument = event.target;
-            console.log(endDocument);
+            // console.log(endDocument);
         });
         divBox.addEventListener("dragend", function (event) {
             event.preventDefault();
@@ -103,12 +122,24 @@ function initView(divId, imgList,x, y) {
             }
 
 
-            console.log(event);
+            // console.log(event);
+
+            if (endDocument.itemData) {
+                console.log(endDocument.itemData);
+                for (let k = 0; k < sourceDivList.length; k++) {
+                    // console.log(sourceDivList[k].itemData);
+                    if (endDocument.itemData == sourceDivList[k].itemData) {
+                        enableDiv(sourceDivList[k]);
+                    }
+                }
+            }
+
+
             //如果源列表拖往结果列表则清除后添加
             for (let k = 0; k < resDivList.length; k++) {
                 //
                 if (resDivList[k].itemData && event.target.itemData == resDivList[k].itemData) {
-                    console.log(resDivList[k]);
+                    // console.log(resDivList[k]);
                     resDivList[k].itemData = undefined;
                     resDivList[k].style.background = "none";
                 }
@@ -116,7 +147,7 @@ function initView(divId, imgList,x, y) {
             endDocument.style.background = event.target.style.background;
             endDocument.style.backgroundSize = "cover";
             endDocument.itemData = event.target.itemData;
-
+            onChange(getResDataList());
             disableDiv(event.target);
 
         });

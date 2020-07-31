@@ -168,18 +168,9 @@ var DragBox = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (DragBox.__proto__ || Object.getPrototypeOf(DragBox)).call(this, props));
 
-        _this.state = {
-            id: new Date().getTime(),
-            children: props.children
-        };
-        _this.rsNum = -1;
-        return _this;
-    }
+        _this.initView = function (size, xSize, ySize, onChange) {
+            var id = _this.state.id;
 
-    _createClass(DragBox, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            var id = this.state.id;
 
             var imageList = [{
                 id: "20101",
@@ -227,19 +218,35 @@ var DragBox = function (_Component) {
                 id: "20115",
                 src: _30.default
             }];
-            _drag.DragBoxJs.drag(id, imageList, 3, 8);
+
+            _drag.DragBoxJs.drag(id, imageList, size, xSize, ySize, onChange);
+        };
+
+        _this.state = {
+            id: new Date().getTime()
+        };
+        _this.rsNum = -1;
+        return _this;
+    }
+
+    _createClass(DragBox, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            console.log(this.props);
+            var _props = this.props,
+                xSize = _props.xSize,
+                ySize = _props.ySize,
+                size = _props.size,
+                onChange = _props.onChange;
+
+            this.initView(size, xSize, ySize, onChange);
         }
     }, {
         key: 'componentWillReceiveProps',
-        value: function componentWillReceiveProps(nextProps) {
-            var _this2 = this;
+        value: function componentWillReceiveProps(nextProps) {}
+        // const {xSize, ySize, size,onChange} = nextProps;
+        // this.initView(size, xSize, ySize,onChange);
 
-            this.setState({
-                children: nextProps.children
-            }, function () {
-                _this2.changWindow(nextProps);
-            });
-        }
 
         // changWindow = (props) => {
         //     if (props.debug) {
@@ -291,7 +298,7 @@ var DragBox = function (_Component) {
 
             return _react2.default.createElement(
                 'div',
-                { id: id, style: { 'display': 'none' } },
+                { id: id, style: { overflow: "hidden", display: "flex", "justify-content": "center" } },
                 children
             );
         }
@@ -319,21 +326,35 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 var DragBoxJs = exports.DragBoxJs = {
-    drag: function drag(divId, imgList, x, y) {
-        initView(divId, imgList, x, y);
+    drag: function drag(divId, imgList, size, x, y, onChange) {
+        initView(divId, imgList, size, x, y, onChange);
     }
 };
 
-var imgList = [];
 var resDivList = [];
 var sourceDivList = [];
 var resDataList = [];
 var endDocument;
 
-function initView(divId, imgList, x, y) {
-    this.imgList = imgList;
-    var size = 100;
+function getResDataList() {
+    return resDivList.filter(function (item) {
+        return item.itemData;
+    }).map(function (item) {
+        return {
+            id: item.itemData,
+            x: item.x,
+            y: item.y
+        };
+    });
+}
+
+function initView(divId, imgList, size, x, y, onChange) {
+    resDivList = [];
+    sourceDivList = [];
+    resDataList = [];
+
     var div = document.getElementById(divId);
+    div.innerHTML = "";
     resDivList = [];
     // div.style.width =  (size+2)*x*2+30 +"px";
     var leftDiv = document.createElement('div');
@@ -346,25 +367,28 @@ function initView(divId, imgList, x, y) {
         divBox.style.border = "1px solid #dfdfdf";
         divBox.style.float = "left";
         divBox.draggable = true;
+        divBox.y = Math.floor(i / x);
+        divBox.x = i - x * Math.floor(i / x);
         divBox.index = i;
         divBox.isRes = true;
         divBox.addEventListener("dragenter", function (event) {
             event.preventDefault();
             endDocument = event.target;
-            console.log(endDocument);
+            // console.log(endDocument);
         });
 
         divBox.addEventListener("dragend", function (event) {
             event.preventDefault();
-            console.log(event);
+            // console.log(event);
 
             if (endDocument.isRes && event.target.isRes) {
                 var tempBackground = endDocument.style.background;
-                var tempItemData = event.target.itemData;
+                var tempItemData = endDocument.itemData;
                 endDocument.style.background = event.target.style.background;
                 endDocument.itemData = event.target.itemData;
                 event.target.style.background = tempBackground;
                 event.target.itemData = tempItemData;
+                onChange(getResDataList());
             }
 
             if (!endDocument.isRes && event.target.isRes) {
@@ -375,6 +399,7 @@ function initView(divId, imgList, x, y) {
                 }
                 event.target.itemData = undefined;
                 event.target.style.background = "none";
+                onChange(getResDataList());
             }
         });
 
@@ -407,7 +432,7 @@ function initView(divId, imgList, x, y) {
         divBox.addEventListener("dragenter", function (event) {
             event.preventDefault();
             endDocument = event.target;
-            console.log(endDocument);
+            // console.log(endDocument);
         });
         divBox.addEventListener("dragend", function (event) {
             event.preventDefault();
@@ -420,20 +445,31 @@ function initView(divId, imgList, x, y) {
                 return;
             }
 
-            console.log(event);
+            // console.log(event);
+
+            if (endDocument.itemData) {
+                console.log(endDocument.itemData);
+                for (var k = 0; k < sourceDivList.length; k++) {
+                    // console.log(sourceDivList[k].itemData);
+                    if (endDocument.itemData == sourceDivList[k].itemData) {
+                        enableDiv(sourceDivList[k]);
+                    }
+                }
+            }
+
             //如果源列表拖往结果列表则清除后添加
-            for (var k = 0; k < resDivList.length; k++) {
+            for (var _k = 0; _k < resDivList.length; _k++) {
                 //
-                if (resDivList[k].itemData && event.target.itemData == resDivList[k].itemData) {
-                    console.log(resDivList[k]);
-                    resDivList[k].itemData = undefined;
-                    resDivList[k].style.background = "none";
+                if (resDivList[_k].itemData && event.target.itemData == resDivList[_k].itemData) {
+                    // console.log(resDivList[k]);
+                    resDivList[_k].itemData = undefined;
+                    resDivList[_k].style.background = "none";
                 }
             }
             endDocument.style.background = event.target.style.background;
             endDocument.style.backgroundSize = "cover";
             endDocument.itemData = event.target.itemData;
-
+            onChange(getResDataList());
             disableDiv(event.target);
         });
         rightDiv.appendChild(divBox);
