@@ -380,8 +380,11 @@ function dragBox() {
             divBox.isRes = true;
             resDivList.forEach(function (item) {
                 if (item.x === x && item.y === y && item.id) {
-                    divBox.itemData = item.id;
-                    divBox.style.background = "url(" + imgItem.src + ") no-repeat";
+                    if (type === 0) {
+                        divBox.style.background = "url(" + imgItem.name + ") no-repeat";
+                    } else {
+                        divBox.innerHTML = imgItem.name;
+                    }
                 }
             });
             divBox.addEventListener("dragenter", function (event) {
@@ -445,7 +448,12 @@ function dragBox() {
             divBox.enable = enable;
             divBox.isRes = false;
             if (imgItem != undefined) {
-                divBox.style.background = "url(" + imgItem.src + ") no-repeat";
+                if (type === 0) {
+                    divBox.style.background = "url(" + imgItem.name + ") no-repeat";
+                } else {
+                    divBox.innerHTML = imgItem.name;
+                }
+
                 divBox.draggable = enable;
             }
             divBox.style.backgroundSize = "cover";
