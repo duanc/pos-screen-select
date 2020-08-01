@@ -347,6 +347,7 @@ function dragBox() {
         }).map(function (item) {
             return {
                 id: item.itemData,
+                name: item.name,
                 x: item.x,
                 y: item.y
             };
@@ -384,6 +385,8 @@ function dragBox() {
                         divBox.style.background = "url(" + imgItem.name + ") no-repeat";
                     } else {
                         divBox.innerHTML = imgItem.name;
+                        divBox.style.textAlign = 'center';
+                        divBox.style.lineHeight = size + "px";
                     }
                 }
             });
@@ -452,6 +455,8 @@ function dragBox() {
                     divBox.style.background = "url(" + imgItem.name + ") no-repeat";
                 } else {
                     divBox.innerHTML = imgItem.name;
+                    divBox.style.textAlign = 'center';
+                    divBox.style.lineHeight = size + "px";
                 }
 
                 divBox.draggable = enable;

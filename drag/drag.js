@@ -18,6 +18,7 @@ function dragBox() {
         }).map((item) => {
             return {
                 id: item.itemData,
+                name: item.name,
                 x:item.x,
                 y:item.y
             }
@@ -53,8 +54,10 @@ function dragBox() {
                 if(item.x===x && item.y===y&&item.id){
                     if(type===0){
                         divBox.style.background = "url(" + imgItem.name + ") no-repeat";
-                    }else{
-                        divBox.innerHTML=imgItem.name
+                    } else {
+                        divBox.innerHTML=imgItem.name;
+                        divBox.style.textAlign='center';
+                        divBox.style.lineHeight=size + "px";
                     }
                 }
             })
@@ -123,7 +126,9 @@ function dragBox() {
                 if(type===0){
                     divBox.style.background = "url(" + imgItem.name + ") no-repeat";
                 }else{
-                    divBox.innerHTML=imgItem.name
+                    divBox.innerHTML=imgItem.name;
+                    divBox.style.textAlign='center';
+                    divBox.style.lineHeight=size + "px";
                 }
 
                 divBox.draggable = enable;
