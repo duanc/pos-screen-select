@@ -171,53 +171,53 @@ var DragBox = function (_Component) {
         _this.initView = function (size, xSize, ySize, onChange, type, sourceDivList, resDivList) {
             var id = _this.state.id;
 
-
-            var imageList = [{
-                id: "20101",
-                src: _2.default
-            }, {
-                id: "20102",
-                src: _4.default
-            }, {
-                id: "20103",
-                src: _6.default
-            }, {
-                id: "20104",
-                src: _8.default
-            }, {
-                id: "20105",
-                src: _10.default
-            }, {
-                id: "20106",
-                src: _12.default
-            }, {
-                id: "20107",
-                src: _14.default
-            }, {
-                id: "20108",
-                src: _16.default
-            }, {
-                id: "20109",
-                src: _18.default
-            }, {
-                id: "20110",
-                src: _20.default
-            }, {
-                id: "20111",
-                src: _22.default
-            }, {
-                id: "20112",
-                src: _24.default
-            }, {
-                id: "20113",
-                src: _26.default
-            }, {
-                id: "20114",
-                src: _28.default
-            }, {
-                id: "20115",
-                src: _30.default
-            }];
+            /* const imageList = [{
+                 id: "20101",
+                 src: img20101,
+             }, {
+                 id: "20102",
+                 src: img20102,
+             }, {
+                 id: "20103",
+                 src: img20103,
+             }, {
+                 id: "20104",
+                 src: img20104,
+             }, {
+                 id: "20105",
+                 src: img20105,
+             }, {
+                 id: "20106",
+                 src: img20106,
+             }, {
+                 id: "20107",
+                 src: img20107,
+             }, {
+                 id: "20108",
+                 src: img20108,
+             }, {
+                 id: "20109",
+                 src: img20109,
+             }, {
+                 id: "20110",
+                 src: img20110,
+             }, {
+                 id: "20111",
+                 src: img20111,
+             }, {
+                 id: "20112",
+                 src: img20112,
+             }, {
+                 id: "20113",
+                 src: img20113,
+             }, {
+                 id: "20114",
+                 src: img20114,
+             }, {
+                 id: "20115",
+                 src: img20115,
+             }];
+            */
 
             _drag.DragBoxJs.drag(id, sourceDivList, size, xSize, ySize, onChange, type, resDivList);
         };
@@ -232,7 +232,7 @@ var DragBox = function (_Component) {
     _createClass(DragBox, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            console.log(this.props);
+            // console.log(this.props);
             var _props = this.props,
                 xSize = _props.xSize,
                 ySize = _props.ySize,
@@ -354,6 +354,8 @@ function dragBox() {
     }
 
     return function (divId, imgList, size, x, y, onChange, type, list) {
+        console.log('imgList总', imgList);
+        console.log('list已经拥有', list);
         resDivList = [];
         sourceDivList = [];
         // resDataList = [];

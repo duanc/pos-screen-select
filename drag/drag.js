@@ -1,14 +1,14 @@
 export const DragBoxJs = {
-    drag: function (divId, imgList, size, x, y, onChange) {
-        dragBox()(divId, imgList, size, x, y, onChange)
+    drag: function (divId, imgList, size, x, y, onChange,type,resDivList) {
+        dragBox()(divId, imgList, size, x, y, onChange,type,resDivList)
     }
 };
 
 function dragBox() {
 
-    var resDivList = [];
-    var sourceDivList = [];
-    var resDataList = [];
+    var resDivList = []; // 结果list
+    var sourceDivList = []; // 原list
+    // var resDataList = [];
     var endDocument;
 
 
@@ -24,14 +24,16 @@ function dragBox() {
         })
     }
 
-    return function(divId, imgList, size, x, y,onChange) {
+    return function(divId, imgList, size, x, y,onChange,type, list) {
+         console.log('imgList总',imgList);
+         console.log('list已经拥有',list);
         resDivList = [];
         sourceDivList = [];
-        resDataList = [];
+        // resDataList = [];
 
         var div = document.getElementById(divId);
         div.innerHTML = "";
-        resDivList = [];
+        // resDivList = [];
         // div.style.width =  (size+2)*x*2+30 +"px";
         var leftDiv = document.createElement('div');
         leftDiv.style.width = (size + 2) * x + "px";
@@ -47,6 +49,12 @@ function dragBox() {
             divBox.x = i - x * Math.floor(i / x);
             divBox.index = i;
             divBox.isRes = true;
+            resDivList.forEach((item)=>{
+                if(item.x===x && item.y===y&&item.id){
+                    divBox.itemData = item.id;
+                    divBox.style.background = "url(" + imgItem.src + ") no-repeat";
+                }
+            })
             divBox.addEventListener("dragenter", function (event) {
                 event.preventDefault();
                 endDocument = event.target;
@@ -91,6 +99,14 @@ function dragBox() {
         rightDiv.style.marginLeft = "30px";
         sourceDivList = [];
         for (var j = 0; j < x * y; j++) {
+            let enable= true;
+            imgList.forEach((itemList)=>{
+                resDivList.forEach((resItem)=>{
+                    if(resItem.id===itemList.id){
+                        enable = false;
+                    }
+                })
+            })
             var imgItem = imgList[j];
             var divBox = document.createElement('div');
             divBox.style.width = size + "px";
@@ -98,20 +114,22 @@ function dragBox() {
             divBox.style.border = "1px solid #dfdfdf";
             divBox.style.float = "left";
             divBox.itemData = imgItem ? imgItem.id : undefined;
-            divBox.enable = true;
+            divBox.enable = enable;
             divBox.isRes = false;
             if (imgItem != undefined) {
                 divBox.style.background = "url(" + imgItem.src + ") no-repeat";
-                divBox.draggable = true;
+                divBox.draggable = enable;
             }
             divBox.style.backgroundSize = "cover";
 
 
+            // 拖动完成后
             divBox.addEventListener("dragenter", function (event) {
                 event.preventDefault();
                 endDocument = event.target;
                 // console.log(endDocument);
             });
+            // 拖动时
             divBox.addEventListener("dragend", function (event) {
                 event.preventDefault();
 
