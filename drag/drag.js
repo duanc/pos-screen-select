@@ -28,7 +28,7 @@ function dragBox() {
     return function(divId, imgList, size, x, y,onChange,type, list) {
          console.log('imgList总',imgList);
          console.log('list已经拥有',list);
-        resDivList = [];
+        resDivList = list;
         sourceDivList = [];
         // resDataList = [];
 
@@ -63,13 +63,14 @@ function dragBox() {
             })
             divBox.addEventListener("dragenter", function (event) {
                 event.preventDefault();
+                console.log('left移动',endDocument);
                 endDocument = event.target;
-                // console.log(endDocument);
+
             });
 
             divBox.addEventListener("dragend", function (event) {
                 event.preventDefault();
-                // console.log(event);
+                console.log('left移动结束');
 
                 if (endDocument.isRes && event.target.isRes) {
                     var tempBackground = endDocument.style.background;
