@@ -51,7 +51,10 @@ function dragBox() {
             divBox.index = i;
             divBox.isRes = true;
             resDivList.forEach((item)=>{
-                if(item.x===x && item.y===y&&item.id){
+                console.log('item',item)
+                console.log('x',i - x * Math.floor(i / x))
+                console.log('y',i - Math.floor(i / x))
+                if(item.x===(i - x * Math.floor(i / x)) && item.y===(Math.floor(i / x))&&item.id){
                     if(type===0){
                         divBox.style.background = "url(" + imgItem.name + ") no-repeat";
                     } else {
