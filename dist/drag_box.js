@@ -171,6 +171,8 @@ var DragBox = function (_Component) {
         _this.initView = function (size, xSize, ySize, onChange, type, sourceDivList, resDivList) {
             var id = _this.state.id;
 
+            console.log('initView', resDivList);
+
             /* const imageList = [{
                  id: "20101",
                  src: img20101,
@@ -218,7 +220,6 @@ var DragBox = function (_Component) {
                  src: img20115,
              }];
             */
-
             _drag.DragBoxJs.drag(id, sourceDivList, size, xSize, ySize, onChange, type, resDivList);
         };
 
@@ -232,7 +233,7 @@ var DragBox = function (_Component) {
     _createClass(DragBox, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            // console.log(this.props);
+            console.log('componentDidMount');
             var _props = this.props,
                 xSize = _props.xSize,
                 ySize = _props.ySize,
@@ -242,6 +243,7 @@ var DragBox = function (_Component) {
                 sourceDivList = _props.sourceDivList,
                 resDivList = _props.resDivList;
 
+            console.log('resDivList', resDivList);
             this.initView(size, xSize, ySize, onChange, type, sourceDivList, resDivList);
         }
     }, {
