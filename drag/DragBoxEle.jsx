@@ -30,14 +30,16 @@ export default class DragBox extends Component {
     }
 
     componentDidMount() {
-        // console.log(this.props);
+        console.log('componentDidMount');
         const {xSize, ySize, size, onChange,type,sourceDivList,resDivList} = this.props;
+        console.log('resDivList', resDivList);
         this.initView(size, xSize, ySize,onChange,type,sourceDivList,resDivList);
     }
 
 
     initView = (size, xSize, ySize,onChange,type,sourceDivList,resDivList) => {
         const {id} = this.state;
+        console.log('initView',resDivList);
 
        /* const imageList = [{
             id: "20101",

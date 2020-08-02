@@ -8,7 +8,7 @@ function dragBox() {
 
     var resDivList = []; // 结果list
     var sourceDivList = []; // 原list
-    // var resDataList = [];
+    var resDataList = [];
     var endDocument;
 
 
@@ -28,9 +28,9 @@ function dragBox() {
     return function(divId, imgList, size, x, y,onChange,type, list) {
          console.log('imgList总',imgList);
          console.log('list已经拥有',list);
-        resDivList = list;
+        resDivList = [];
         sourceDivList = [];
-        // resDataList = [];
+        resDataList = list;
 
         var div = document.getElementById(divId);
         div.innerHTML = "";
@@ -50,10 +50,10 @@ function dragBox() {
             divBox.x = i - x * Math.floor(i / x);
             divBox.index = i;
             divBox.isRes = true;
-            resDivList.forEach((item)=>{
-                console.log('item',item)
-                console.log('x',i - x * Math.floor(i / x))
-                console.log('y',i - Math.floor(i / x))
+            resDataList.forEach((item)=>{
+                console.log('item',item);
+                console.log('x',i - x * Math.floor(i / x));
+                console.log('y',i - Math.floor(i / x));
                 if(item.x===(i - x * Math.floor(i / x)) && item.y===(Math.floor(i / x))&&item.id){
                     if(type===0){
                         divBox.style.background = "url(" + imgItem.name + ") no-repeat";
