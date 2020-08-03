@@ -357,8 +357,6 @@ function dragBox() {
     }
 
     return function (divId, imgList, size, x, y, onChange, type, list) {
-        console.log('imgList总', imgList);
-        console.log('list已经拥有', list);
         resDivList = [];
         sourceDivList = [];
         resDataList = list;
@@ -382,14 +380,13 @@ function dragBox() {
             divBox.index = i;
             divBox.isRes = true;
             resDataList.forEach(function (item) {
-                console.log('item', item);
-                console.log('x', i - x * Math.floor(i / x));
-                console.log('y', i - Math.floor(i / x));
                 if (item.x === i - x * Math.floor(i / x) && item.y === Math.floor(i / x) && item.id) {
+                    divBox.itemData = item ? item.id : undefined;
                     if (type === 0) {
-                        divBox.style.background = "url(" + imgItem.name + ") no-repeat";
+                        divBox.style.background = "url(" + item.name + ") no-repeat";
+                        divBox.style.backgroundSize = "cover";
                     } else {
-                        divBox.innerHTML = imgItem.name;
+                        divBox.innerHTML = item.name;
                         divBox.style.textAlign = 'center';
                         divBox.style.lineHeight = size + "px";
                     }
@@ -397,13 +394,15 @@ function dragBox() {
             });
             divBox.addEventListener("dragenter", function (event) {
                 event.preventDefault();
-                console.log('left移动', endDocument);
+                // console.log('left移动',endDocument);
                 endDocument = event.target;
             });
 
             divBox.addEventListener("dragend", function (event) {
                 event.preventDefault();
                 console.log('left移动结束');
+                console.log('endDocument.isRes', endDocument.isRes);
+                console.log('event.target.isRes', event.target.isRes);
 
                 if (endDocument.isRes && event.target.isRes) {
                     var tempBackground = endDocument.style.background;
@@ -438,14 +437,6 @@ function dragBox() {
         rightDiv.style.marginLeft = "30px";
         sourceDivList = [];
         for (var j = 0; j < x * y; j++) {
-            var enable = true;
-            imgList.forEach(function (itemList) {
-                resDivList.forEach(function (resItem) {
-                    if (resItem.id === itemList.id) {
-                        enable = false;
-                    }
-                });
-            });
             var imgItem = imgList[j];
             var divBox = document.createElement('div');
             divBox.style.width = size + "px";
@@ -453,8 +444,19 @@ function dragBox() {
             divBox.style.border = "1px solid #dfdfdf";
             divBox.style.float = "left";
             divBox.itemData = imgItem ? imgItem.id : undefined;
-            divBox.enable = enable;
+            divBox.enable = true;
             divBox.isRes = false;
+            divBox.draggable = true;
+            // let enable= true;
+            /*imgList.forEach((itemList)=>{
+                resDataList.forEach((resItem)=>{
+                      if(resItem.id===itemList.id){
+                        // console.log(resItem.id,itemList.id);
+                        disableDiv(divBox);
+                    }
+                })
+            })*/
+
             if (imgItem != undefined) {
                 if (type === 0) {
                     divBox.style.background = "url(" + imgItem.name + ") no-repeat";
@@ -463,19 +465,18 @@ function dragBox() {
                     divBox.style.textAlign = 'center';
                     divBox.style.lineHeight = size + "px";
                 }
-
-                divBox.draggable = enable;
             }
             divBox.style.backgroundSize = "cover";
 
-            // 拖动完成后
+            // 拖动是
             divBox.addEventListener("dragenter", function (event) {
                 event.preventDefault();
                 endDocument = event.target;
                 // console.log(endDocument);
             });
-            // 拖动时
+            // 拖动完成
             divBox.addEventListener("dragend", function (event) {
+                console.log('right移动');
                 event.preventDefault();
 
                 if (!endDocument.isRes && !event.target.isRes) {
@@ -513,10 +514,24 @@ function dragBox() {
                 onChange(getResDataList());
                 disableDiv(event.target);
             });
+
             rightDiv.appendChild(divBox);
             sourceDivList.push(divBox);
         }
+
         div.appendChild(rightDiv);
+
+        var _loop = function _loop(k) {
+            resDataList.forEach(function (item) {
+                if (item.id === sourceDivList[k].itemData) {
+                    disableDiv(sourceDivList[k]);
+                }
+            });
+        };
+
+        for (var k = 0; k < sourceDivList.length; k++) {
+            _loop(k);
+        }
     };
 
     function disableDiv(div) {
