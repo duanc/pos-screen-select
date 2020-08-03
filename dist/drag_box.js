@@ -170,8 +170,7 @@ var DragBox = function (_Component) {
 
         _this.initView = function (size, xSize, ySize, onChange, type, sourceDivList, resDivList) {
             var id = _this.state.id;
-
-            console.log('initView', resDivList);
+            // console.log('initView',resDivList);
 
             /* const imageList = [{
                  id: "20101",
@@ -220,6 +219,7 @@ var DragBox = function (_Component) {
                  src: img20115,
              }];
             */
+
             _drag.DragBoxJs.drag(id, sourceDivList, size, xSize, ySize, onChange, type, resDivList);
         };
 
@@ -233,7 +233,7 @@ var DragBox = function (_Component) {
     _createClass(DragBox, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            console.log('componentDidMount');
+            // console.log('componentDidMount');
             var _props = this.props,
                 xSize = _props.xSize,
                 ySize = _props.ySize,
@@ -242,13 +242,19 @@ var DragBox = function (_Component) {
                 type = _props.type,
                 sourceDivList = _props.sourceDivList,
                 resDivList = _props.resDivList;
+            // console.log('resDivList', resDivList);
+            // console.log('sourceDivList', sourceDivList);
+            // console.log('xSize', xSize);
+            // console.log('ySize', ySize);
 
-            console.log('resDivList', resDivList);
             this.initView(size, xSize, ySize, onChange, type, sourceDivList, resDivList);
         }
     }, {
         key: 'componentWillReceiveProps',
         value: function componentWillReceiveProps(nextProps) {}
+        // const {xSize, ySize, size, onChange,type,sourceDivList,resDivList} = this.props;
+        // console.log('resDivList', resDivList,xSize,ySize);
+        // this.initView(size, xSize, ySize,onChange,type,sourceDivList,resDivList);
         // const {xSize, ySize, size,onChange} = nextProps;
         // this.initView(size, xSize, ySize,onChange);
 
@@ -374,6 +380,8 @@ function dragBox() {
             divBox.style.height = size + "px";
             divBox.style.border = "1px solid #dfdfdf";
             divBox.style.float = "left";
+            divBox.style.lineHeight = size + 'px';
+            divBox.style.textAlign = 'center';
             divBox.draggable = true;
             divBox.y = Math.floor(i / x);
             divBox.x = i - x * Math.floor(i / x);
@@ -401,15 +409,24 @@ function dragBox() {
             divBox.addEventListener("dragend", function (event) {
                 event.preventDefault();
                 console.log('left移动结束');
-                console.log('endDocument.isRes', endDocument.isRes);
-                console.log('event.target.isRes', event.target.isRes);
+                // console.log('endDocument.isRes',endDocument);
+                // console.log('event.target.isRes',event.target);
+
 
                 if (endDocument.isRes && event.target.isRes) {
-                    var tempBackground = endDocument.style.background;
+                    var tempBackground;
                     var tempItemData = endDocument.itemData;
-                    endDocument.style.background = event.target.style.background;
+                    if (type == 0) {
+                        tempBackground = endDocument.style.background;
+                        endDocument.style.background = event.target.style.background;
+                        event.target.style.background = tempBackground;
+                    } else {
+                        tempBackground = endDocument.innerText;
+                        endDocument.innerHTML = event.target.innerText;
+                        event.target.innerHTML = tempBackground;
+                    }
+
                     endDocument.itemData = event.target.itemData;
-                    event.target.style.background = tempBackground;
                     event.target.itemData = tempItemData;
                     onChange(getResDataList());
                 }
@@ -422,6 +439,7 @@ function dragBox() {
                     }
                     event.target.itemData = undefined;
                     event.target.style.background = "none";
+                    event.target.innerHTML = '', event.innerHTML = null;
                     onChange(getResDataList());
                 }
             });
@@ -444,6 +462,8 @@ function dragBox() {
             divBox.style.border = "1px solid #dfdfdf";
             divBox.style.float = "left";
             divBox.itemData = imgItem ? imgItem.id : undefined;
+            divBox.style.lineHeight = size + 'px';
+            divBox.style.textAlign = 'center';
             divBox.enable = true;
             divBox.isRes = false;
             divBox.draggable = true;
@@ -462,8 +482,8 @@ function dragBox() {
                     divBox.style.background = "url(" + imgItem.name + ") no-repeat";
                 } else {
                     divBox.innerHTML = imgItem.name;
-                    divBox.style.textAlign = 'center';
-                    divBox.style.lineHeight = size + "px";
+                    // divBox.style.textAlign='center';
+                    // divBox.style.lineHeight=size + "px";
                 }
             }
             divBox.style.backgroundSize = "cover";
@@ -508,9 +528,17 @@ function dragBox() {
                         resDivList[_k].style.background = "none";
                     }
                 }
-                endDocument.style.background = event.target.style.background;
-                endDocument.style.backgroundSize = "cover";
+
                 endDocument.itemData = event.target.itemData;
+                if (type === 1) {
+                    endDocument.innerHTML = event.target.innerText;
+                    // endDocument.style.textAlign='center';
+                    // endDocument.style.lineHeight=size + "px";
+                } else {
+                    endDocument.style.background = event.target.style.background;
+                    endDocument.style.backgroundSize = "cover";
+                }
+
                 onChange(getResDataList());
                 disableDiv(event.target);
             });
@@ -532,18 +560,21 @@ function dragBox() {
         for (var k = 0; k < sourceDivList.length; k++) {
             _loop(k);
         }
+        onChange(getResDataList());
     };
 
     function disableDiv(div) {
         div.enable = false;
         div.draggable = false;
         div.style.filter = "grayscale(100%)";
+        div.style.opacity = '0.3';
     }
 
     function enableDiv(div) {
         div.enable = true;
         div.draggable = true;
         div.style.filter = "grayscale(0%)";
+        div.style.opacity = '1';
     }
 }
 

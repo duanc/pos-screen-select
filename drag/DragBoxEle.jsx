@@ -30,16 +30,19 @@ export default class DragBox extends Component {
     }
 
     componentDidMount() {
-        console.log('componentDidMount');
+        // console.log('componentDidMount');
         const {xSize, ySize, size, onChange,type,sourceDivList,resDivList} = this.props;
-        console.log('resDivList', resDivList);
+        // console.log('resDivList', resDivList);
+        // console.log('sourceDivList', sourceDivList);
+        // console.log('xSize', xSize);
+        // console.log('ySize', ySize);
         this.initView(size, xSize, ySize,onChange,type,sourceDivList,resDivList);
     }
 
 
     initView = (size, xSize, ySize,onChange,type,sourceDivList,resDivList) => {
         const {id} = this.state;
-        console.log('initView',resDivList);
+        // console.log('initView',resDivList);
 
        /* const imageList = [{
             id: "20101",
@@ -93,6 +96,9 @@ export default class DragBox extends Component {
 
 
     componentWillReceiveProps(nextProps) {
+        // const {xSize, ySize, size, onChange,type,sourceDivList,resDivList} = this.props;
+        // console.log('resDivList', resDivList,xSize,ySize);
+        // this.initView(size, xSize, ySize,onChange,type,sourceDivList,resDivList);
         // const {xSize, ySize, size,onChange} = nextProps;
         // this.initView(size, xSize, ySize,onChange);
     }
