@@ -375,6 +375,7 @@ function dragBox() {
         leftDiv.style.width = (size + 2) * x + "px";
         leftDiv.style.float = "left";
         for (var i = 0; i < x * y; i++) {
+            // var divBoxFather=document.createElement('div');
             var divBox = document.createElement('div');
             divBox.style.width = size + "px";
             divBox.style.height = size + "px";
@@ -404,16 +405,20 @@ function dragBox() {
                 event.preventDefault();
                 // console.log('left移动',endDocument);
                 endDocument = event.target;
-            });
+            }, false);
+            divBox.addEventListener("dragover", function (event) {
+                event.preventDefault();
+            }, false);
 
             divBox.addEventListener("dragend", function (event) {
                 event.preventDefault();
-                console.log('left移动结束');
+                // console.log('left移动结束');
                 // console.log('endDocument.isRes',endDocument);
-                // console.log('event.target.isRes',event.target);
+                // console.log('event.target.isRes',event.target.parentElement);
 
 
                 if (endDocument.isRes && event.target.isRes) {
+
                     var tempBackground;
                     var tempItemData = endDocument.itemData;
                     if (type == 0) {
@@ -432,6 +437,7 @@ function dragBox() {
                 }
 
                 if (!endDocument.isRes && event.target.isRes) {
+                    // console.log('2')
                     for (var k = 0; k < sourceDivList.length; k++) {
                         if (event.target.itemData == sourceDivList[k].itemData) {
                             enableDiv(sourceDivList[k]);
@@ -442,8 +448,8 @@ function dragBox() {
                     event.target.innerHTML = '', event.innerHTML = null;
                     onChange(getResDataList());
                 }
-            });
-
+            }, false);
+            // divBoxFather.appendChild(divBox);
             resDivList.push(divBox);
             leftDiv.appendChild(divBox);
         }
@@ -456,6 +462,7 @@ function dragBox() {
         sourceDivList = [];
         for (var j = 0; j < x * y; j++) {
             var imgItem = imgList[j];
+            // var divBoxFather=document.createElement('div');
             var divBox = document.createElement('div');
             divBox.style.width = size + "px";
             divBox.style.height = size + "px";
@@ -467,16 +474,6 @@ function dragBox() {
             divBox.enable = true;
             divBox.isRes = false;
             divBox.draggable = true;
-            // let enable= true;
-            /*imgList.forEach((itemList)=>{
-                resDataList.forEach((resItem)=>{
-                      if(resItem.id===itemList.id){
-                        // console.log(resItem.id,itemList.id);
-                        disableDiv(divBox);
-                    }
-                })
-            })*/
-
             if (imgItem != undefined) {
                 if (type === 0) {
                     divBox.style.background = "url(" + imgItem.name + ") no-repeat";
@@ -492,12 +489,15 @@ function dragBox() {
             divBox.addEventListener("dragenter", function (event) {
                 event.preventDefault();
                 endDocument = event.target;
-                // console.log(endDocument);
-            });
+            }, false);
+            divBox.addEventListener("dragover", function (event) {
+                event.preventDefault();
+            }, false);
             // 拖动完成
             divBox.addEventListener("dragend", function (event) {
                 console.log('right移动');
                 event.preventDefault();
+                event.stopPropagation();
 
                 if (!endDocument.isRes && !event.target.isRes) {
                     return;
@@ -541,10 +541,10 @@ function dragBox() {
 
                 onChange(getResDataList());
                 disableDiv(event.target);
-            });
-
-            rightDiv.appendChild(divBox);
+            }, false);
+            // divBoxFather.appendChild(divBox)
             sourceDivList.push(divBox);
+            rightDiv.appendChild(divBox);
         }
 
         div.appendChild(rightDiv);
