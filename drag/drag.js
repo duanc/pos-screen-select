@@ -59,7 +59,10 @@ function dragBox() {
             // var divBoxFather=document.createElement('div');
             var divBox = document.createElement('div');
             divBox.style.width = size + "px";
-            divBox.style.whiteSpace="nowrap";
+            divBox.style.whiteSpace="normal";
+            divBox.style.textOverflow='ellipsis';
+            divBox.style.overflow="hidden";
+            divBox.style.wordBreak=' word-break';
             divBox.style.height = size + "px";
             divBox.style.border = "1px solid #dfdfdf";
             divBox.style.float = "left";
@@ -151,6 +154,9 @@ function dragBox() {
             var divBox = document.createElement('div');
             divBox.style.width = size + "px";
             divBox.style.whiteSpace="nowrap";
+            divBox.style.textOverflow='ellipsis';
+            divBox.style.overflow="hidden";
+            divBox.style.wordBreak=' word-break';
             divBox.style.height = size + "px";
             divBox.style.border = "1px solid #dfdfdf";
             divBox.style.float = "left";
