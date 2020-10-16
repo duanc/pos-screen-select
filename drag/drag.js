@@ -1,6 +1,6 @@
 export const DragBoxJs = {
-    drag: function (divId, imgList, size, x, y, onChange,type,resDivList) {
-        dragBox()(divId, imgList, size, x, y, onChange,type,resDivList)
+    drag: function (divId, imgList, size, x, y, onChange,type,resDivList,showValue,showButtonValue) {
+        dragBox()(divId, imgList, size, x, y, onChange,type,resDivList,showValue,showButtonValue)
     }
 };
 
@@ -25,12 +25,30 @@ function dragBox() {
         })
     }
 
-    return function(divId, imgList, size, x, y,onChange,type, list) {
+    return function(divId, imgList, size, x, y,onChange,type, list,showValue,showButtonValue) {
         resDivList = [];
         sourceDivList = [];
         resDataList = list;
+        // console.log('showValue',showValue);
+        // console.log('showButtonValue',showButtonValue);
+
 
         var div = document.getElementById(divId);
+        var left=document.createElement('div');
+        var right= document.createElement('div');
+        var showPos=document.createElement('div');
+        var showButton=document.createElement('div');
+        showPos.innerHTML=showValue;
+        showPos.style.backgroundColor='#6cacec';
+        showPos.style.padding='0 0 0 10px';
+        showPos.style.height= '35px';
+        showPos.style.lineHeight='35px';
+        showPos.style.marginRight='5px';
+        showButton.innerHTML=showButtonValue;
+        showButton.style.backgroundColor='#6cacec';
+        showButton.style.padding='0 0 0 10px';
+        showButton.style.height= '35px';
+        showButton.style.lineHeight='35px';
         div.innerHTML = "";
         // resDivList = [];
         // div.style.width =  (size+2)*x*2+30 +"px";
@@ -41,6 +59,7 @@ function dragBox() {
             // var divBoxFather=document.createElement('div');
             var divBox = document.createElement('div');
             divBox.style.width = size + "px";
+            divBox.style.whiteSpace="nowrap";
             divBox.style.height = size + "px";
             divBox.style.border = "1px solid #dfdfdf";
             divBox.style.float = "left";
@@ -118,7 +137,8 @@ function dragBox() {
             resDivList.push(divBox);
             leftDiv.appendChild(divBox);
         }
-        div.appendChild(leftDiv);
+        left.appendChild(showPos);left.appendChild(leftDiv)
+        div.appendChild(left);
 
         var rightDiv = document.createElement('div');
         rightDiv.style.width = (size + 2) * x + "px";
@@ -130,6 +150,7 @@ function dragBox() {
             // var divBoxFather=document.createElement('div');
             var divBox = document.createElement('div');
             divBox.style.width = size + "px";
+            divBox.style.whiteSpace="nowrap";
             divBox.style.height = size + "px";
             divBox.style.border = "1px solid #dfdfdf";
             divBox.style.float = "left";
@@ -179,7 +200,7 @@ function dragBox() {
                 // console.log(event);
 
                 if (endDocument.itemData) {
-                    console.log(endDocument.itemData);
+                    // console.log(endDocument.itemData);
                     for (let k = 0; k < sourceDivList.length; k++) {
                         // console.log(sourceDivList[k].itemData);
                         if (endDocument.itemData == sourceDivList[k].itemData) {
@@ -216,8 +237,10 @@ function dragBox() {
             sourceDivList.push(divBox);
             rightDiv.appendChild(divBox);
         }
+        right.appendChild(showButton);
+        right.appendChild(rightDiv)
 
-        div.appendChild(rightDiv);
+        div.appendChild(right);
 
         for (let k = 0; k < sourceDivList.length; k++) {
             resDataList.forEach((item)=>{

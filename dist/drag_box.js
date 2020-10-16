@@ -168,7 +168,7 @@ var DragBox = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (DragBox.__proto__ || Object.getPrototypeOf(DragBox)).call(this, props));
 
-        _this.initView = function (size, xSize, ySize, onChange, type, sourceDivList, resDivList) {
+        _this.initView = function (size, xSize, ySize, onChange, type, sourceDivList, resDivList, showValue, showButton) {
             var id = _this.state.id;
             // console.log('initView',resDivList);
 
@@ -220,7 +220,7 @@ var DragBox = function (_Component) {
              }];
             */
 
-            _drag.DragBoxJs.drag(id, sourceDivList, size, xSize, ySize, onChange, type, resDivList);
+            _drag.DragBoxJs.drag(id, sourceDivList, size, xSize, ySize, onChange, type, resDivList, showValue, showButton);
         };
 
         _this.state = {
@@ -233,7 +233,7 @@ var DragBox = function (_Component) {
     _createClass(DragBox, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            // console.log('componentDidMount');
+            console.log('componentDidMount', this.props);
             var _props = this.props,
                 xSize = _props.xSize,
                 ySize = _props.ySize,
@@ -241,13 +241,15 @@ var DragBox = function (_Component) {
                 onChange = _props.onChange,
                 type = _props.type,
                 sourceDivList = _props.sourceDivList,
-                resDivList = _props.resDivList;
+                resDivList = _props.resDivList,
+                showValue = _props.showValue,
+                showButton = _props.showButton;
             // console.log('resDivList', resDivList);
             // console.log('sourceDivList', sourceDivList);
             // console.log('xSize', xSize);
             // console.log('ySize', ySize);
 
-            this.initView(size, xSize, ySize, onChange, type, sourceDivList, resDivList);
+            this.initView(size, xSize, ySize, onChange, type, sourceDivList, resDivList, showValue, showButton);
         }
     }, {
         key: 'componentWillReceiveProps',
@@ -337,8 +339,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 var DragBoxJs = exports.DragBoxJs = {
-    drag: function drag(divId, imgList, size, x, y, onChange, type, resDivList) {
-        dragBox()(divId, imgList, size, x, y, onChange, type, resDivList);
+    drag: function drag(divId, imgList, size, x, y, onChange, type, resDivList, showValue, showButtonValue) {
+        dragBox()(divId, imgList, size, x, y, onChange, type, resDivList, showValue, showButtonValue);
     }
 };
 
@@ -362,12 +364,30 @@ function dragBox() {
         });
     }
 
-    return function (divId, imgList, size, x, y, onChange, type, list) {
+    return function (divId, imgList, size, x, y, onChange, type, list, showValue, showButtonValue) {
         resDivList = [];
         sourceDivList = [];
         resDataList = list;
+        // console.log('showValue',showValue);
+        // console.log('showButtonValue',showButtonValue);
+
 
         var div = document.getElementById(divId);
+        var left = document.createElement('div');
+        var right = document.createElement('div');
+        var showPos = document.createElement('div');
+        var showButton = document.createElement('div');
+        showPos.innerHTML = showValue;
+        showPos.style.backgroundColor = '#6cacec';
+        showPos.style.padding = '0 0 0 10px';
+        showPos.style.height = '35px';
+        showPos.style.lineHeight = '35px';
+        showPos.style.marginRight = '5px';
+        showButton.innerHTML = showButtonValue;
+        showButton.style.backgroundColor = '#6cacec';
+        showButton.style.padding = '0 0 0 10px';
+        showButton.style.height = '35px';
+        showButton.style.lineHeight = '35px';
         div.innerHTML = "";
         // resDivList = [];
         // div.style.width =  (size+2)*x*2+30 +"px";
@@ -378,6 +398,7 @@ function dragBox() {
             // var divBoxFather=document.createElement('div');
             var divBox = document.createElement('div');
             divBox.style.width = size + "px";
+            divBox.style.whiteSpace = "nowrap";
             divBox.style.height = size + "px";
             divBox.style.border = "1px solid #dfdfdf";
             divBox.style.float = "left";
@@ -453,7 +474,8 @@ function dragBox() {
             resDivList.push(divBox);
             leftDiv.appendChild(divBox);
         }
-        div.appendChild(leftDiv);
+        left.appendChild(showPos);left.appendChild(leftDiv);
+        div.appendChild(left);
 
         var rightDiv = document.createElement('div');
         rightDiv.style.width = (size + 2) * x + "px";
@@ -465,6 +487,7 @@ function dragBox() {
             // var divBoxFather=document.createElement('div');
             var divBox = document.createElement('div');
             divBox.style.width = size + "px";
+            divBox.style.whiteSpace = "nowrap";
             divBox.style.height = size + "px";
             divBox.style.border = "1px solid #dfdfdf";
             divBox.style.float = "left";
@@ -510,7 +533,7 @@ function dragBox() {
                 // console.log(event);
 
                 if (endDocument.itemData) {
-                    console.log(endDocument.itemData);
+                    // console.log(endDocument.itemData);
                     for (var k = 0; k < sourceDivList.length; k++) {
                         // console.log(sourceDivList[k].itemData);
                         if (endDocument.itemData == sourceDivList[k].itemData) {
@@ -546,8 +569,10 @@ function dragBox() {
             sourceDivList.push(divBox);
             rightDiv.appendChild(divBox);
         }
+        right.appendChild(showButton);
+        right.appendChild(rightDiv);
 
-        div.appendChild(rightDiv);
+        div.appendChild(right);
 
         var _loop = function _loop(k) {
             resDataList.forEach(function (item) {
