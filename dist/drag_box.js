@@ -377,20 +377,29 @@ function dragBox() {
         var right = document.createElement('div');
         var showPos = document.createElement('div');
         var showButton = document.createElement('div');
+
+        var showDiv = document.createElement('div');
+        showDiv.id = 'showDiv';
+        showDiv.style.position = 'absolute';
+        showDiv.style.backgroundColor = 'white';
+        showDiv.style.border = '1px solid black';
+        showDiv.style.display = 'none';
+
         showPos.innerHTML = showValue;
         showPos.style.backgroundColor = '#6cacec';
         showPos.style.padding = '0 0 0 10px';
         showPos.style.height = '35px';
         showPos.style.lineHeight = '35px';
         showPos.style.marginRight = '5px';
+
         showButton.innerHTML = showButtonValue;
         showButton.style.backgroundColor = '#6cacec';
         showButton.style.padding = '0 0 0 10px';
         showButton.style.height = '35px';
         showButton.style.lineHeight = '35px';
+
         div.innerHTML = "";
-        // resDivList = [];
-        // div.style.width =  (size+2)*x*2+30 +"px";
+
         var leftDiv = document.createElement('div');
         leftDiv.style.width = (size + 2) * x + "px";
         leftDiv.style.float = "left";
@@ -398,7 +407,10 @@ function dragBox() {
             // var divBoxFather=document.createElement('div');
             var divBox = document.createElement('div');
             divBox.style.width = size + "px";
-            divBox.style.whiteSpace = "nowrap";
+            divBox.style.whiteSpace = "normal";
+            divBox.style.textOverflow = 'ellipsis';
+            divBox.style.overflow = "hidden";
+            divBox.style.wordBreak = ' word-break';
             divBox.style.height = size + "px";
             divBox.style.border = "1px solid #dfdfdf";
             divBox.style.float = "left";
@@ -412,9 +424,23 @@ function dragBox() {
             resDataList.forEach(function (item) {
                 if (item.x === i - x * Math.floor(i / x) && item.y === Math.floor(i / x) && item.id) {
                     divBox.itemData = item ? item.id : undefined;
+                    divBox.title = item.name;
                     if (type === 0) {
-                        divBox.style.background = "url(" + item.name + ") no-repeat";
+                        divBox.style.background = "url(" + item.url + ") no-repeat";
                         divBox.style.backgroundSize = "cover";
+                        divBox.addEventListener('mouseover', function (event) {
+                            event.preventDefault();
+                            var show = document.getElementById('showDiv');
+                            show.style.display = 'block';
+                            show.style.top = event.clientY;
+                            show.style.left = event.clientX;
+                            show.innerHTML = event.target.title;
+                        });
+                        divBox.addEventListener('mouseout', function (event) {
+                            event.preventDefault();
+                            var show = document.getElementById('showDiv');
+                            show.style.block = 'none';
+                        });
                     } else {
                         divBox.innerHTML = item.name;
                         divBox.style.textAlign = 'center';
@@ -422,6 +448,7 @@ function dragBox() {
                     }
                 }
             });
+
             divBox.addEventListener("dragenter", function (event) {
                 event.preventDefault();
                 // console.log('left移动',endDocument);
@@ -430,7 +457,6 @@ function dragBox() {
             divBox.addEventListener("dragover", function (event) {
                 event.preventDefault();
             }, false);
-
             divBox.addEventListener("dragend", function (event) {
                 event.preventDefault();
                 // console.log('left移动结束');
@@ -474,7 +500,8 @@ function dragBox() {
             resDivList.push(divBox);
             leftDiv.appendChild(divBox);
         }
-        left.appendChild(showPos);left.appendChild(leftDiv);
+        left.appendChild(showPos);
+        left.appendChild(leftDiv);
         div.appendChild(left);
 
         var rightDiv = document.createElement('div');
@@ -488,6 +515,9 @@ function dragBox() {
             var divBox = document.createElement('div');
             divBox.style.width = size + "px";
             divBox.style.whiteSpace = "nowrap";
+            divBox.style.textOverflow = 'ellipsis';
+            divBox.style.overflow = "hidden";
+            divBox.style.wordBreak = ' word-break';
             divBox.style.height = size + "px";
             divBox.style.border = "1px solid #dfdfdf";
             divBox.style.float = "left";
@@ -499,7 +529,25 @@ function dragBox() {
             divBox.draggable = true;
             if (imgItem != undefined) {
                 if (type === 0) {
-                    divBox.style.background = "url(" + imgItem.name + ") no-repeat";
+                    divBox.style.position = 'relative';
+                    divBox.style.background = "url(" + imgItem.url + ") no-repeat";
+                    divBox.title = imgItem.name;
+                    // divBox.appendChild(divName);
+                    divBox.addEventListener('mouseover', function (event) {
+                        event.preventDefault();
+                        var show = document.getElementById('showDiv');
+                        console.log('show', show);
+                        show.style.position = 'absolute';
+                        show.style.top = event.clientY;
+                        show.style.left = event.clientX;
+                        show.style.display = 'block';
+                        show.innerHTML = event.target.title;
+                    });
+                    divBox.addEventListener('mouseout', function (event) {
+                        event.preventDefault();
+                        var show = document.getElementById('showDiv');
+                        show.style.block = 'none';
+                    });
                 } else {
                     divBox.innerHTML = imgItem.name;
                     // divBox.style.textAlign='center';
@@ -573,6 +621,7 @@ function dragBox() {
         right.appendChild(rightDiv);
 
         div.appendChild(right);
+        // div.appendChild(showDiv);
 
         var _loop = function _loop(k) {
             resDataList.forEach(function (item) {
