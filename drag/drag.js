@@ -39,14 +39,12 @@ function dragBox() {
         var showPos=document.createElement('div');
         var showButton=document.createElement('div');
 
-        var showDiv=document.createElement('div');
+        var showDiv=document.createElement('span');
         showDiv.id='showDiv';
-        showDiv.style.position='absolute';
+        showDiv.style.position='fixed';
         showDiv.style.backgroundColor = 'white';
         showDiv.style.border='1px solid black';
         showDiv.style.display='none';
-
-
 
         showPos.innerHTML=showValue;
         showPos.style.backgroundColor='#6cacec';
@@ -68,60 +66,60 @@ function dragBox() {
         leftDiv.style.float = "left";
         for (var i = 0; i < x * y; i++) {
             // var divBoxFather=document.createElement('div');
-            var divBox = document.createElement('div');
-            divBox.style.width = size + "px";
-            divBox.style.whiteSpace="normal";
-            divBox.style.textOverflow='ellipsis';
-            divBox.style.overflow="hidden";
-            divBox.style.wordBreak=' word-break';
-            divBox.style.height = size + "px";
-            divBox.style.border = "1px solid #dfdfdf";
-            divBox.style.float = "left";
-            divBox.style.lineHeight=size+'px';
-            divBox.style.textAlign='center';
-            divBox.draggable = true;
-            divBox.y = Math.floor(i / x);
-            divBox.x = i - x * Math.floor(i / x);
-            divBox.index = i;
-            divBox.isRes = true;
+            let divBox1 = document.createElement('div');
+            divBox1.style.width = size + "px";
+            divBox1.style.whiteSpace="normal";
+            divBox1.style.textOverflow='ellipsis';
+            divBox1.style.overflow="hidden";
+            divBox1.style.wordBreak=' word-break';
+            divBox1.style.height = size + "px";
+            divBox1.style.border = "1px solid #dfdfdf";
+            divBox1.style.float = "left";
+            divBox1.style.lineHeight=size+'px';
+            divBox1.style.textAlign='center';
+            divBox1.draggable = true;
+            divBox1.y = Math.floor(i / x);
+            divBox1.x = i - x * Math.floor(i / x);
+            divBox1.index = i;
+            divBox1.isRes = true;
             resDataList.forEach((item)=>{
                 if(item.x===(i - x * Math.floor(i / x)) && item.y===(Math.floor(i / x))&&item.id){
-                    divBox.itemData = item ? item.id : undefined;
-                    divBox.title=item.name;
+                    divBox1.itemData = item ? item.id : undefined;
+                    divBox1.title=item.name;
                     if(type===0){
-                        divBox.style.background = "url(" + item.url + ") no-repeat";
-                        divBox.style.backgroundSize = "cover";
-                        divBox.addEventListener('mouseover',function (event) {
-                            event.preventDefault();
-                            var show = document.getElementById('showDiv');
-                            show.style.display ='block';
-                            show.style.top=event.clientY;
-                            show.style.left=event.clientX;
-                            show.innerHTML=event.target.title;
-                        })
-                        divBox.addEventListener('mouseout',function (event) {
-                            event.preventDefault();
-                            var show = document.getElementById('showDiv');
-                            show.style.block='none';
-                        })
+                        divBox1.style.background = "url(" + item.url + ") no-repeat";
+                        divBox1.style.backgroundSize = "cover";
+                        // divBox1.addEventListener('mouseover',function (event) {
+                        //     event.preventDefault();
+                        //     var show = document.getElementById('showDiv');
+                        //     show.style.display ='block';
+                        //     show.style.top=event.clientY;
+                        //     show.style.left=event.clientX;
+                        //     show.innerHTML=event.target.title;
+                        // })
+                        // divBox1.addEventListener('mouseout',function (event) {
+                        //     event.preventDefault();
+                        //     var show = document.getElementById('showDiv');
+                        //     show.style.block='none';
+                        // })
                     } else {
-                        divBox.innerHTML=item.name;
-                        divBox.style.textAlign='center';
-                        divBox.style.lineHeight=size + "px";
+                        divBox1.innerHTML=item.name;
+                        divBox1.style.textAlign='center';
+                        divBox1.style.lineHeight=size + "px";
                     }
                 }
             })
 
-            divBox.addEventListener("dragenter", function (event) {
+            divBox1.addEventListener("dragenter", function (event) {
                 event.preventDefault();
                 // console.log('left移动',endDocument);
                 endDocument = event.target;
 
             },false);
-            divBox.addEventListener("dragover", function (event) {
+            divBox1.addEventListener("dragover", function (event) {
                 event.preventDefault();
             },false);
-            divBox.addEventListener("dragend", function (event) {
+            divBox1.addEventListener("dragend", function (event) {
                 event.preventDefault();
                 // console.log('left移动结束');
                 // console.log('endDocument.isRes',endDocument);
@@ -131,11 +129,15 @@ function dragBox() {
                 if (endDocument.isRes && event.target.isRes) {
 
                     var tempBackground;
+                    var title;
                     var tempItemData = endDocument.itemData;
                     if(type==0){
                         tempBackground=endDocument.style.background;
+                        title=endDocument.title;
                         endDocument.style.background = event.target.style.background;
+                        endDocument.title=event.target.title;
                         event.target.style.background = tempBackground;
+                        event.target.title=title;
                     }else{
                         tempBackground=endDocument.innerText;
                         endDocument.innerHTML= event.target.innerText;
@@ -156,17 +158,19 @@ function dragBox() {
                     }
                     event.target.itemData = undefined;
                     event.target.style.background = "none";
+                    event.target.title='';
                     event.target.innerHTML='',
                     event.innerHTML=null;
                     onChange(getResDataList());
                 }
             },false);
             // divBoxFather.appendChild(divBox);
-            resDivList.push(divBox);
-            leftDiv.appendChild(divBox);
+            resDivList.push(divBox1);
+            leftDiv.appendChild(divBox1);
         }
         left.appendChild(showPos);
-        left.appendChild(leftDiv)
+        left.appendChild(leftDiv);
+
         div.appendChild(left);
 
         var rightDiv = document.createElement('div');
@@ -177,7 +181,7 @@ function dragBox() {
         for (var j = 0; j < x * y; j++) {
             var imgItem = imgList[j];
             // var divBoxFather=document.createElement('div');
-            var divBox = document.createElement('div');
+            let divBox = document.createElement('div');
             divBox.style.width = size + "px";
             divBox.style.whiteSpace="nowrap";
             divBox.style.textOverflow='ellipsis';
@@ -198,7 +202,7 @@ function dragBox() {
                     divBox.style.background = "url("+imgItem.url+") no-repeat";
                     divBox.title=imgItem.name;
                     // divBox.appendChild(divName);
-                    divBox.addEventListener('mouseover',function (event) {
+                   /* divBox.addEventListener('mouseover',function (event) {
                         event.preventDefault();
                         var show = document.getElementById('showDiv');
                         console.log('show', show);
@@ -212,7 +216,7 @@ function dragBox() {
                         event.preventDefault();
                         var show = document.getElementById('showDiv');
                         show.style.block='none';
-                    })
+                    }) */
                 }else{
                     divBox.innerHTML=imgItem.name;
                     // divBox.style.textAlign='center';
@@ -279,6 +283,7 @@ function dragBox() {
                     // endDocument.style.lineHeight=size + "px";
                 }else{
                     endDocument.style.background = event.target.style.background;
+                    endDocument.title=event.target.title;
                     endDocument.style.backgroundSize = "cover";
                 }
 
@@ -291,9 +296,10 @@ function dragBox() {
         }
         right.appendChild(showButton);
         right.appendChild(rightDiv);
-
         div.appendChild(right);
-        // div.appendChild(showDiv);
+
+        // div.append(showDiv);
+
         for (let k = 0; k < sourceDivList.length; k++) {
             resDataList.forEach((item)=>{
                 if(item.id===sourceDivList[k].itemData){
