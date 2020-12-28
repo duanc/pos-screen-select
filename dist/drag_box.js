@@ -539,10 +539,11 @@ function dragBox() {
             divBox.isRes = false;
             divBox.draggable = true;
             if (imgItem != undefined) {
+                divBox.title = imgItem.name;
                 if (type === 0) {
                     divBox.style.position = 'relative';
                     divBox.style.background = "url(" + imgItem.url + ") no-repeat";
-                    divBox.title = imgItem.name;
+                    // divBox.title=imgItem.name;
                     // divBox.appendChild(divName);
                     /* divBox.addEventListener('mouseover',function (event) {
                          event.preventDefault();
@@ -632,6 +633,7 @@ function dragBox() {
         right.appendChild(showButton);
         right.appendChild(rightDiv);
         div.appendChild(right);
+
         // div.append(showDiv);
 
         var _loop2 = function _loop2(k) {
