@@ -388,7 +388,6 @@ function dragBox() {
         showPos.style.height = '35px';
         showPos.style.lineHeight = '35px';
         showPos.style.marginRight = '5px';
-        showPos.style.marginLeft = '30px';
 
         showButton.innerHTML = showButtonValue;
         showButton.style.backgroundColor = '#343A40';
@@ -396,7 +395,7 @@ function dragBox() {
         showButton.style.padding = '0 0 0 10px';
         showButton.style.height = '35px';
         showButton.style.lineHeight = '35px';
-
+        showButton.style.marginLeft = '30px';
         div.innerHTML = "";
 
         var leftDiv = document.createElement('div');
