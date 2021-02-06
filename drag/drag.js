@@ -29,10 +29,6 @@ function dragBox() {
         resDivList = [];
         sourceDivList = [];
         resDataList = list;
-        // console.log('showValue',showValue);
-        // console.log('showButtonValue',showButtonValue);
-
-
         var div = document.getElementById(divId);
         var left=document.createElement('div');
         var right= document.createElement('div');
@@ -47,14 +43,17 @@ function dragBox() {
         showDiv.style.display='none';
 
         showPos.innerHTML=showValue;
-        showPos.style.backgroundColor='#6cacec';
+        showPos.style.backgroundColor='#343A40';
+        showPos.style.color='#ffffff';
         showPos.style.padding='0 0 0 10px';
         showPos.style.height= '35px';
         showPos.style.lineHeight='35px';
         showPos.style.marginRight='5px';
+        showPos.style.marginLeft='30px'
 
         showButton.innerHTML=showButtonValue;
-        showButton.style.backgroundColor='#6cacec';
+        showButton.style.backgroundColor='#343A40';
+        showButton.style.color='#ffffff';
         showButton.style.padding='0 0 0 10px';
         showButton.style.height= '35px';
         showButton.style.lineHeight='35px';
