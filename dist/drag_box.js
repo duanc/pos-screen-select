@@ -168,59 +168,10 @@ var DragBox = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (DragBox.__proto__ || Object.getPrototypeOf(DragBox)).call(this, props));
 
-        _this.initView = function (size, xSize, ySize, onChange, type, sourceDivList, resDivList, showValue, showButton) {
+        _this.initView = function (size, xSize, ySize, onChange, type, sourceDivList, resDivList, showValue, showButton, onClick) {
             var id = _this.state.id;
-            // console.log('initView',resDivList);
 
-            /* const imageList = [{
-                 id: "20101",
-                 src: img20101,
-             }, {
-                 id: "20102",
-                 src: img20102,
-             }, {
-                 id: "20103",
-                 src: img20103,
-             }, {
-                 id: "20104",
-                 src: img20104,
-             }, {
-                 id: "20105",
-                 src: img20105,
-             }, {
-                 id: "20106",
-                 src: img20106,
-             }, {
-                 id: "20107",
-                 src: img20107,
-             }, {
-                 id: "20108",
-                 src: img20108,
-             }, {
-                 id: "20109",
-                 src: img20109,
-             }, {
-                 id: "20110",
-                 src: img20110,
-             }, {
-                 id: "20111",
-                 src: img20111,
-             }, {
-                 id: "20112",
-                 src: img20112,
-             }, {
-                 id: "20113",
-                 src: img20113,
-             }, {
-                 id: "20114",
-                 src: img20114,
-             }, {
-                 id: "20115",
-                 src: img20115,
-             }];
-            */
-
-            _drag.DragBoxJs.drag(id, sourceDivList, size, xSize, ySize, onChange, type, resDivList, showValue, showButton);
+            _drag.DragBoxJs.drag(id, sourceDivList, size, xSize, ySize, onChange, type, resDivList, showValue, showButton, onClick);
         };
 
         _this.state = {
@@ -243,65 +194,16 @@ var DragBox = function (_Component) {
                 sourceDivList = _props.sourceDivList,
                 resDivList = _props.resDivList,
                 showValue = _props.showValue,
-                showButton = _props.showButton;
-            // console.log('resDivList', resDivList);
-            // console.log('sourceDivList', sourceDivList);
-            // console.log('xSize', xSize);
-            // console.log('ySize', ySize);
+                showButton = _props.showButton,
+                onClick = _props.onClick;
 
-            this.initView(size, xSize, ySize, onChange, type, sourceDivList, resDivList, showValue, showButton);
+            this.initView(size, xSize, ySize, onChange, type, sourceDivList, resDivList, showValue, showButton, onClick);
         }
     }, {
         key: 'componentWillReceiveProps',
-        value: function componentWillReceiveProps(nextProps) {}
-        // const {xSize, ySize, size, onChange,type,sourceDivList,resDivList} = this.props;
-        // console.log('resDivList', resDivList,xSize,ySize);
-        // this.initView(size, xSize, ySize,onChange,type,sourceDivList,resDivList);
-        // const {xSize, ySize, size,onChange} = nextProps;
-        // this.initView(size, xSize, ySize,onChange);
+        value: function componentWillReceiveProps(nextProps) {
 
-
-        // changWindow = (props) => {
-        //     if (props.debug) {
-        //         console.log(props);
-        //         console.log(this.rsNum);
-        //     }
-        //
-        //     if (props.visible && this.rsNum === -1) {
-        //         const {id} = this.state;
-        //         let content = $('#' + id);
-        //         if (props.type === 2) {
-        //             const {children} = this.state;
-        //             content = children;
-        //         }
-        //         const rs = layer.open({
-        //             shade: props.shade || 0,
-        //             type: props.type || 1,
-        //             title: props.title,
-        //             maxmin: true,
-        //             anim:3,
-        //             area: [props.width || '800px', props.height || '500px'],
-        //             zIndex: layer.zIndex,
-        //             success: function (layero) {
-        //                 layer.setTop(layero);
-        //             },
-        //             content,
-        //             cancel: (index) => {
-        //                 if (props.onCancel) {
-        //                     props.onCancel(index);
-        //                 }
-        //                 return false;
-        //             }
-        //         });
-        //         this.rsNum = rs;
-        //     }
-        //
-        //     if (!props.visible && this.rsNum !== -1) {
-        //         layer.close(this.rsNum);
-        //         this.rsNum = -1;
-        //     }
-        // };
-
+        }
     }, {
         key: 'render',
         value: function render() {
@@ -339,8 +241,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 var DragBoxJs = exports.DragBoxJs = {
-    drag: function drag(divId, imgList, size, x, y, onChange, type, resDivList, showValue, showButtonValue) {
-        dragBox()(divId, imgList, size, x, y, onChange, type, resDivList, showValue, showButtonValue);
+    drag: function drag(divId, imgList, size, x, y, onChange, type, resDivList, showValue, showButtonValue, onClick) {
+        dragBox()(divId, imgList, size, x, y, onChange, type, resDivList, showValue, showButtonValue, onClick);
     }
 };
 
@@ -364,7 +266,7 @@ function dragBox() {
         });
     }
 
-    return function (divId, imgList, size, x, y, onChange, type, list, showValue, showButtonValue) {
+    return function (divId, imgList, size, x, y, onChange, type, list, showValue, showButtonValue, onClick) {
         resDivList = [];
         sourceDivList = [];
         resDataList = list;
@@ -427,19 +329,6 @@ function dragBox() {
                     if (type === 0) {
                         divBox1.style.background = "url(" + item.url + ") no-repeat";
                         divBox1.style.backgroundSize = "cover";
-                        // divBox1.addEventListener('mouseover',function (event) {
-                        //     event.preventDefault();
-                        //     var show = document.getElementById('showDiv');
-                        //     show.style.display ='block';
-                        //     show.style.top=event.clientY;
-                        //     show.style.left=event.clientX;
-                        //     show.innerHTML=event.target.title;
-                        // })
-                        // divBox1.addEventListener('mouseout',function (event) {
-                        //     event.preventDefault();
-                        //     var show = document.getElementById('showDiv');
-                        //     show.style.block='none';
-                        // })
                     } else {
                         divBox1.innerHTML = item.name;
                         divBox1.style.textAlign = 'center';
@@ -448,9 +337,13 @@ function dragBox() {
                 }
             });
 
+            divBox1.addEventListener('dblclick', function (event) {
+                event.preventDefault();
+                onClick(event);
+            });
             divBox1.addEventListener("dragenter", function (event) {
                 event.preventDefault();
-                // console.log('left移动',endDocument);
+
                 endDocument = event.target;
             }, false);
             divBox1.addEventListener("dragover", function (event) {
@@ -458,10 +351,6 @@ function dragBox() {
             }, false);
             divBox1.addEventListener("dragend", function (event) {
                 event.preventDefault();
-                // console.log('left移动结束');
-                // console.log('endDocument.isRes',endDocument);
-                // console.log('event.target.isRes',event.target.parentElement);
-
 
                 if (endDocument.isRes && event.target.isRes) {
 
@@ -566,6 +455,10 @@ function dragBox() {
             }
             divBox.style.backgroundSize = "cover";
 
+            divBox.addEventListener('dblclick', function (event) {
+                event.preventDefault();
+                onClick(event);
+            });
             // 拖动是
             divBox.addEventListener("dragenter", function (event) {
                 event.preventDefault();

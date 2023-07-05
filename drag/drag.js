@@ -1,6 +1,6 @@
 export const DragBoxJs = {
-    drag: function (divId, imgList, size, x, y, onChange,type,resDivList,showValue,showButtonValue) {
-        dragBox()(divId, imgList, size, x, y, onChange,type,resDivList,showValue,showButtonValue)
+    drag: function (divId, imgList, size, x, y, onChange,type,resDivList,showValue,showButtonValue,onClick) {
+        dragBox()(divId, imgList, size, x, y, onChange,type,resDivList,showValue,showButtonValue,onClick)
     }
 };
 
@@ -25,7 +25,7 @@ function dragBox() {
         })
     }
 
-    return function(divId, imgList, size, x, y,onChange,type, list,showValue,showButtonValue) {
+    return function(divId, imgList, size, x, y,onChange,type, list,showValue,showButtonValue,onClick) {
         resDivList = [];
         sourceDivList = [];
         resDataList = list;
@@ -88,19 +88,7 @@ function dragBox() {
                     if(type===0){
                         divBox1.style.background = "url(" + item.url + ") no-repeat";
                         divBox1.style.backgroundSize = "cover";
-                        // divBox1.addEventListener('mouseover',function (event) {
-                        //     event.preventDefault();
-                        //     var show = document.getElementById('showDiv');
-                        //     show.style.display ='block';
-                        //     show.style.top=event.clientY;
-                        //     show.style.left=event.clientX;
-                        //     show.innerHTML=event.target.title;
-                        // })
-                        // divBox1.addEventListener('mouseout',function (event) {
-                        //     event.preventDefault();
-                        //     var show = document.getElementById('showDiv');
-                        //     show.style.block='none';
-                        // })
+
                     } else {
                         divBox1.innerHTML=item.name;
                         divBox1.style.textAlign='center';
@@ -109,9 +97,13 @@ function dragBox() {
                 }
             })
 
+            divBox1.addEventListener('dblclick', function (event) {
+                event.preventDefault();
+                onClick(event);
+            });
             divBox1.addEventListener("dragenter", function (event) {
                 event.preventDefault();
-                // console.log('left移动',endDocument);
+
                 endDocument = event.target;
 
             },false);
@@ -120,9 +112,7 @@ function dragBox() {
             },false);
             divBox1.addEventListener("dragend", function (event) {
                 event.preventDefault();
-                // console.log('left移动结束');
-                // console.log('endDocument.isRes',endDocument);
-                // console.log('event.target.isRes',event.target.parentElement);
+
 
 
                 if (endDocument.isRes && event.target.isRes) {
@@ -229,7 +219,10 @@ function dragBox() {
 
 
 
-
+            divBox.addEventListener('dblclick', function (event) {
+                event.preventDefault();
+                onClick(event);
+            });
             // 拖动是
             divBox.addEventListener("dragenter", function (event) {
                 event.preventDefault();
